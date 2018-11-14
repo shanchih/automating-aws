@@ -1,0 +1,199 @@
+#Pyton Features
+pipenv install boto3
+pipenv install -d ipython /* -d install for development not for run time*/
+pipenv install -d pycodestyle
+pipenvinstall -d pydocstyle
+pipenv install -d pylint
+pipenv install -d pyflakes
+
+# code styling
+pycodestyle webtron.py  /* styling code*/
+pydocstyle webotron.py
+pylint webotron.py
+pyflakes
+
+cat > lint.sh
+#!/bin/sh
+pycodestyle webotron/
+pydocstyle webotron/
+pylint webotron/
+pyflakes webotron/
+chmod u+x lint.sh
+./lint.sh
+
+
+#Packaging
+1. clean up import library
+python -m webtron.webtron
+pip install setuptools
+python setup.py bdist_wheel
+ls dist/
+pip3 uninstall webotron
+pip3 install dist/webotron_01-0.1-py3-none-any.whl
+pip3 show webotron
+webotron
+
+#Mac Setup
+Homebrew
+brew doctor    /*check
+brew prune
+brew cask install atom  /*install atom*/
+brew install python3
+pip3 install pipenv
+brew install node
+npm install -g serverless
+serverless --help
+brew install awscli
+aws help
+ssh-keygen -C my@email.comno passphrase  /*set up sshkey, need to replace my@email */
+ssh-add
+
+***Set up aws account***
+us-east-1
+1. Create IAM Group Adimn
+2. Create an user pythonAutomation (only programming access)
+3. Assign user to Admin group
+4. Download credientials (csv) and rename it to pythonAutomation_credentials.csv
+5. cat pythonAutomation_credentials.csv
+6. aws configure --profile pythonAutomation
+   AWS Access Key ID [None]: AKIAJSKJ7K6UOKK52L7Q
+   AWS Secret Access Key [None]: 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
+   Default region name [None]: us-east-1
+   Default output format [None]: json
+
+aws s3 ls --profile pythonAutomation  /*list s3 bucket*/
+aws s3 md s3://mytestbucket --profile pythonAutomation /*create a bucket*/
+
+/**check aws config**/
+cd
+cat ~/.aws/config
+[default]
+region = us-east-1
+[profile pythonAutomation]
+region = us-east-1
+output = json
+
+
+
+***Create a local git repository***
+mkdir myproject
+cd myproject
+git init
+
+Step 2: Add a new file to the repo
+git status
+
+git add
+git commit
+git commit -m "This is my first commit!"
+
+git remote add origin https://github.com/cubeton/mynewrepository.git
+
+
+https://github.com/shanchih/video.git
+
+…or create a new repository on the command line
+echo "# video" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/shanchih/video.git
+git push -u origin master
+
+…or push an existing repository from the command line
+git remote add origin https://github.com/shanchih/video.git
+git push -u origin master
+
+
+
+domain name: miludigital.com
+cat ~/.ssh/id_rsa.pub    #get ssh public key
+Alex$ git clone git@github.com:shanchih/automating-aws.git
+git status
+git add README.md
+git commit -m "Update README"
+git push origin master
+
+
+*****************************
+***Publish a website to S3***
+*****************************
+***pipenv and boto3****
+mkdir 01-webotron
+cd 01-webotron
+ls
+pipenv --three  /*use python3*/
+cat Pipfile
+pipenv install boto3  // https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+pipenv install -d ipython /* -d install for development not for run time*/
+pipenv run ipython    /* run ipython inside environment */
+In [1]: import boto3
+In [2]: session = boto3.Session(profile_name='pythonAutomation')
+In [3]: s3 = session.resource('s3')
+In [4]: for bucket in s3.buckets.all():
+   ...:     print(bucket)
+   ...:
+s3.Bucket(name='alex-acg-sfb-upload')
+s3.Bucket(name='alex-transcoded')
+
+
+s3.create_bucket(Bucket='alexhobokentest', CreateBucketConfiguration={
+    'LocationConstraint': session.region_name})  /*Need to specify locationConstraint if outside us-east-1*/
+
+new_bucket=s3.create_bucket(Bucket='alexhobokentest')
+ec2_client = session.client('ec2')
+%history    /* history of ipython commands*/
+%save ipythonsesseion.py 1-10  /* save line 1 to 10 to ipythonsession.py */
+ctrl-d  /*quick ipython session*/
+pipenv run ipython -i ipythonsesseion.py   /* re-run the history */
+
+***Script skeletion, configure boto3, and command line arguments***
+mkdir webotron  /* create sub directory to for python package*/
+atom .  /* create webtron.py */
+1. pipenv run python webotron/webotron.py
+or
+2. pipenv shell
+   python webotron/webotron.py
+pipenv install click  // https://click.palletsprojects.com/en/7.x/
+python webotron/webotron.py --help   /* generate help message*/
+
+***Hosting a Static Website on Amazon S3***
+https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html
+1. add content (web site)
+atom index.html
+opne index.html   /* Mac command*/
+copy index.html to s3 bucket from AWS console
+2. Set bucket policy; need to replace bucket name
+
+{
+  "Version":"2012-10-17",
+  "Statement":[{
+	"Sid":"PublicReadGetObject",
+        "Effect":"Allow",
+	  "Principal": "*",
+      "Action":["s3:GetObject"],
+      "Resource":["arn:aws:s3:::alexhobokentest/*"
+      ]
+    }
+  ]
+}
+
+3. turn on web site hosting option on s3
+go to Properties tab
+Select Static website hosting
+
+
+In [2]: session.region_name
+Out[2]: 'us-east-1'
+
+handle difference between linux and windows:
+https://docs.python.org/3/library/pathlib.html
+
+
+
+
+###Notifications for Cloud Watch events
+
+
+
+####Analyze videos with Rekognition
