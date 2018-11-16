@@ -32,4 +32,7 @@ Webotron currently has the following features:
 Notifon is a project to notify slack users of changes to your AWS account using CloudWatch events
 
 - EC2 key pair
+- AutoScaling and Policy
+- Serverless framework https://serverless.com/framework/docs/
+- Slack  https://slack.com/
 ### Features
